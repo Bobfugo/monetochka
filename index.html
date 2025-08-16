@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="dark" />
+  <title>Египетская монетка — да/нет</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <!-- Размытый тёмно-сиреневый фон -->
+  <div class="bg"></div>
+  <div class="vignette"></div>
+
+  <main class="container">
+    <h1 class="title">Египетская монетка</h1>
+    <p class="subtitle">Нажми на монету — она решит «да» или «нет»</p>
+
+    <!-- Сцена с монетой -->
+    <div id="coinWrapper" class="coin-wrapper" role="button" tabindex="0" aria-label="Монетка">
+      <div id="coin" class="coin">
+        <!-- Лицевая сторона — ДА -->
+        <div class="face face-front">
+          <svg viewBox="0 0 200 200" class="svg">
+            <defs>
+              <radialGradient id="goldFront" cx="50%" cy="45%" r="60%">
+                <stop offset="0%" stop-color="#f5d98a" />
+                <stop offset="55%" stop-color="#d6b25e" />
+                <stop offset="100%" stop-color="#8c6b2b" />
+              </radialGradient>
+              <filter id="engrave">
+                <feOffset dx="0.6" dy="0.6" result="off" />
+                <feGaussianBlur in="off" stdDeviation="0.7" result="blur"/>
+                <feComposite in="SourceGraphic" in2="blur" operator="out" />
+              </filter>
+            </defs>
+            <circle cx="100" cy="100" r="96" fill="url(#goldFront)"/>
+            <!-- Египетский орнамент по краю -->
+            <g opacity="0.38">
+              <path d="M100 20 A80 80 0 1 1 99.9 20" fill="none" stroke="#3a2c0f" stroke-width="2" stroke-opacity="0.45" stroke-dasharray="6 8"/>
+            </g>
+            <!-- Надпись ДА как гравировка -->
+            <text x="50%" y="54%" text-anchor="middle"
+                  font-size="64" font-family="Georgia, 'Times New Roman', serif"
+                  fill="#2b1d06" filter="url(#engrave)" style="letter-spacing:2px">ДА</text>
+          </svg>
+        </div>
+
+        <!-- Обратная сторона — НЕТ -->
+        <div class="face face-back">
+          <svg viewBox="0 0 200 200" class="svg">
+            <defs>
+              <radialGradient id="goldBack" cx="50%" cy="55%" r="65%">
+                <stop offset="0%" stop-color="#f1d180" />
+                <stop offset="55%" stop-color="#c6a14a" />
+                <stop offset="100%" stop-color="#7a5b24" />
+              </radialGradient>
+              <filter id="engrave2">
+                <feOffset dx="0.6" dy="0.6" result="off" />
+                <feGaussianBlur in="off" stdDeviation="0.7" result="blur"/>
+                <feComposite in="SourceGraphic" in2="blur" operator="out" />
+              </filter>
+            </defs>
+            <circle cx="100" cy="100" r="96" fill="url(#goldBack)"/>
+            <!-- Солнечный диск/крылья -->
+            <g opacity="0.35">
+              <ellipse cx="100" cy="75" rx="45" ry="12" fill="#3b2a18"/>
+              <path d="M55,75 Q70,95 85,75" fill="#3b2a18"/>
+              <path d="M115,75 Q130,95 145,75" fill="#3b2a18"/>
+            </g>
+            <!-- Надпись НЕТ -->
+            <text x="50%" y="54%" text-anchor="middle"
+                  font-size="56" font-family="Georgia, 'Times New Roman', serif"
+                  fill="#231706" filter="url(#engrave2)" style="letter-spacing:2px">НЕТ</text>
+          </svg>
+        </div>
+
+        <!-- Торец монеты -->
+        <div class="rim"></div>
+      </div>
+
+      <div class="hint">нажми монетку</div>
+    </div>
+
+    <!-- Панель управления -->
+    <div class="controls">
+      <button id="againBtn" class="btn secondary" hidden>Ещё раз</button>
+      <div id="result" class="result" aria-live="polite"></div>
+    </div>
+  </main>
+
+  <script src="./app.js"></script>
+</body>
+</html>
