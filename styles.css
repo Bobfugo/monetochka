@@ -1,0 +1,127 @@
+:root{
+  --bg1: #170c1f;
+  --bg2: #2a0a37;
+  --bg3: #4c1a6a;
+  --text: #ece6f6;
+  --coin-size: clamp(220px, 36vw, 360px);
+  --rim-thickness: 16px;
+}
+
+/* База */
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial;
+  color: var(--text);
+  background: radial-gradient(ellipse at 50% 30%, #2b0a3a 0%, #1a0f24 55%, #0e0815 100%);
+  overflow: hidden;
+}
+
+/* Размытый фиолетовый фон */
+.bg {
+  position: fixed; inset: -10vh -10vw;
+  background:
+    radial-gradient(40vw 40vh at 20% 30%, rgba(134, 61, 255,0.28), transparent 60%),
+    radial-gradient(35vw 35vh at 80% 20%, rgba(255, 75, 180,0.18), transparent 60%),
+    radial-gradient(50vw 40vh at 50% 80%, rgba(96, 64, 255,0.22), transparent 60%),
+    linear-gradient(160deg, var(--bg3), var(--bg2) 45%, var(--bg1) 100%);
+  filter: blur(40px) saturate(120%);
+  z-index: -2;
+}
+.vignette{
+  position: fixed; inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 55%, rgba(0,0,0,0) 0%, rgba(0,0,0,0.2) 60%, rgba(0,0,0,0.6) 100%);
+  z-index: -1;
+}
+
+/* Контейнер */
+.container{
+  min-height: 100%;
+  display: grid;
+  place-items: center;
+  padding: 6vh 16px 10vh;
+  gap: 18px;
+  text-align: center;
+}
+.title{
+  margin: 0;
+  font-weight: 800;
+  font-size: clamp(22px, 2.6vw, 30px);
+  text-shadow: 0 2px 16px rgba(120,80,200,0.35);
+}
+.subtitle{ margin: -6px 0 6px; opacity: .85; }
+
+/* Монета */
+.coin-wrapper{
+  display: grid; place-items: center; gap: 12px;
+  user-select: none; -webkit-user-select: none;
+  cursor: pointer;
+  outline: none;
+}
+.hint{ font-size: 13px; opacity: 0.7; }
+
+.coin{
+  width: var(--coin-size);
+  height: var(--coin-size);
+  position: relative;
+  transform-style: preserve-3d;
+  perspective: 1200px;
+  transition: filter .25s ease;
+  filter: drop-shadow(0 22px 40px rgba(0,0,0,0.45)) drop-shadow(0 0 60px rgba(160,120,255,0.18));
+}
+.coin:active{ filter: drop-shadow(0 22px 40px rgba(0,0,0,0.55)) drop-shadow(0 0 80px rgba(160,120,255,0.28)); }
+
+.face{
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  backface-visibility: hidden;
+  display: grid; place-items: center;
+  transform-style: preserve-3d;
+}
+.face-front{ transform: translateZ(calc(var(--rim-thickness) / 2)); }
+.face-back{ transform: rotateY(180deg) translateZ(calc(var(--rim-thickness) / 2)); }
+.svg{ width: 100%; height: 100%; border-radius: 50%; }
+
+/* Торец монеты */
+.rim{
+  position: absolute; inset: calc(var(--rim-thickness) / -2);
+  border-radius: 50%;
+  background:
+    radial-gradient(closest-side, rgba(0,0,0,0) calc(100% - var(--rim-thickness)), rgba(0,0,0,0.35) calc(100% - var(--rim-thickness) + 1px), rgba(0,0,0,0.35) 100%),
+    conic-gradient(from 0turn,
+      #6d5623, #a7893e 16%, #c5a049 25%, #6d5623 33%,
+      #a7893e 50%, #c5a049 58%, #6d5623 66%, #a7893e 83%, #c5a049 92%, #6d5623 100%);
+  filter: brightness(1.05) contrast(1.02);
+  pointer-events: none;
+}
+
+/* Кнопки/результат */
+.controls{ display:flex; gap:10px; align-items:center; justify-content:center; flex-wrap:wrap; }
+.btn{
+  appearance:none; border:none; outline:none; cursor:pointer;
+  padding:12px 16px; border-radius:12px;
+  background: linear-gradient(180deg, #a88cf0, #5d34a4);
+  color:#1a0826; font-weight:800; letter-spacing:.3px;
+  box-shadow: 0 6px 18px rgba(0,0,0,.35), 0 0 0 1px rgba(255,255,255,.12) inset;
+  transition: transform .06s ease, filter .2s ease, opacity .2s ease;
+}
+.btn.secondary{ background: linear-gradient(180deg, #c7b3ff, #3f2b6b); color:#f1eaff; }
+.btn:active{ transform: translateY(1px) scale(.98); }
+.result{ min-width:100px; font-size:18px; font-weight:800; text-shadow:0 2px 10px rgba(0,0,0,.4); }
+
+/* Небольшое «дыхание» монеты в покое */
+@keyframes gentle-pulse{
+  0%,100% { transform: translateZ(0) scale(1); }
+  50% { transform: translateZ(0) scale(1.02); }
+}
+.coin:not(.spinning){ animation: gentle-pulse 3s ease-in-out infinite; }
+
+/* Доступность: фокус */
+.coin-wrapper:focus-visible{
+  outline: 3px solid rgba(200,160,255,.6);
+  outline-offset: 10px;
+  border-radius: 14px;
+}
